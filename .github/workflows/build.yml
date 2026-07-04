@@ -18,17 +18,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      continue-on-error: true
-
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
+    - name: Install Fresh Gradle
+      uses: gradle/actions/setup-gradle@v3
       with:
-        name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        gradle-version: 8.5
+
+    - name: Build APK with Fresh Gradle
+      run: gradle assembleDebug
